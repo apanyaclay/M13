@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST API - MVC</title>
+    <link rel="stylesheet" href="https://www.unpkg.com/bulma@0.9.3/css/bulma.css">
+</head>
+
+<body>
+    <div id="app" class="container is-max-desktop mt-5">
+        <h1 class="title">Edit Supplier</h1>
+        <div class="field"><label class="label">Company Name</label>
+            <div class="control"><input type="text" placeholder="Company Name" class="input" name="company_name" id="company_name"
+                    value="<%= supplier.company_name %>"></div>
+        </div>
+        <div class="field"><label class="label">Contact Name</label>
+            <div class="control"><input type="text" placeholder="Contact Name" class="input" name="contact_name" id="contact_name"
+                    value=<%= supplier.contact_name %> ></div>
+        </div>
+        <div class="field"><label class="label">Email</label>
+            <div class="control"><input type="email" placeholder="Email" class="input" name="email" id="email"
+                    value=<%= supplier.email %> ></div>
+        </div>
+        <div class="field"><label class="label">Phone</label>
+            <div class="control"><input type="text" placeholder="Phone" class="input" name="phone" id="phone"
+                    value=<%= supplier.phone %> ></div>
+        </div>
+        <div class="field"><label class="label">Active</label>
+            <div class="control"><input type="number" placeholder="Active" class="input" name="active" id="active"
+                    value=<%= supplier.active %> ></div>
+        </div>
+        <div class="control">
+            <button class="button is-warning" id="save" onclick=<%="edit(" + supplier.id+ ")" %> > UPDATE</button>
+        </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const edit = (id) => {
+            axios({
+                method: 'put', url: '/api/supplier/' + id, data: {
+                    company_name: document.getElementById("company_name").value,
+                    contact_name: document.getElementById("contact_name").value,
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    active: document.getElementById("active").value
+                }
+            }).then((result) => {
+                alert('Info status: ' + result.status)
+                window.location = "/";
+            }).catch((err) => {
+                alert('error ' + err)
+            });
+        }
+    </script>
+</body>
+
+</html>

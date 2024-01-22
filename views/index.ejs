@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST API - MVC | M13</title>
+    <link rel="stylesheet" href="https://www.unpkg.com/bulma@0.9.3/css/bulma.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    Bunny Web
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="mx-3">
+                            <%= user.email %>
+                        </div>
+                        <div class="buttons">
+                            <%- (!user?'<a href="/login" class="button is-light">Login</a>':'<a href="/logout" class="button is-light">Logout</a>') %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div id="app" class="container is-max-desktop mt-5">
+        <h1 class="title">List Of Supplier</h1>
+        <div>
+            <% if(user){ %>
+                <a href="/create-supplier" class="button is-success">Add New</a>
+            <% }%>
+            <table class="table is-striped is-bordered mt-3 is-fullwidth" style="margin:
+    10px auto;">
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Contact Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Created By</th>
+                        <th>Updated By</th>
+                        <% if(user){ %>
+                            <th class="has-text-centered">Actions</th>
+                        <% }%>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% suppliers.forEach(el=> { %>
+                        <tr>
+                            <td>
+                                <%= el.company_name %>
+                            </td>
+                            <td>
+                                <%= el.contact_name %>
+                            </td>
+                            <td>
+                                <%= el.email %>
+                            </td>
+                            <td>
+                                <%= el.phone %>
+                            </td>
+                            <td>
+                                <%= el.createdBy %>
+                            </td>
+                            <td>
+                                <%= el.updatedBy %>
+                            </td>
+                            <% if(user){ %>
+                            <td class="has-text-centered">
+                                    <a href="/edit-supplier/<%= el.id %>" class="button is-warning is-small">Edit</a>
+                                    <button class="button is-danger is-small"
+                                    style="margin-left: 5px;" onclick=<%='del(' +el.id+')' %>>Delete</a>
+                                </td>
+                            <% } %>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let del = (id) => {
+            axios.delete('/api/supplier/' + id).then((result) => {
+                alert('Info status: ' + result.status)
+                location.reload();
+            }).catch((err) => {
+                alert('error ' + err)
+            });
+        }
+    </script>
+</body>
+
+</html>
